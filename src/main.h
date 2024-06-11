@@ -28,68 +28,38 @@ int key_press_mutex = 1;
 
 void delay_us(uint16_t us) {
     while (us--) {
-        _delay_us(1); // This intrinsic function will now work as the value is constant
+        _delay_us(1); 
     }
 }
 
 void delay_ms(uint16_t ms) {
     while (ms--) {
-        _delay_ms(1); // This intrinsic function will now work as the value is constant
+        _delay_ms(1);
     }
 }
 void set_pwm_pitch(int pitch) {
     if (pitch == 0) {
-        // Turn off the buzzer
+     
         PORTC &= ~(1 << 5);
         return;
     }
 
-    // Ensure the pitch value is within a reasonable range
+   
     if (pitch < 50) {
-        pitch = 50;  // Minimum pitch
+        pitch = 50;  
     } else if (pitch > 2000) {
-        pitch = 2000;  // Maximum pitch
+        pitch = 2000; 
     }
 
-    // Generate the PWM signal with the specified pitch
-    int period = 1000000 / pitch;  // Calculate the period in microseconds
-    int high_time = period / 2;    // 50% duty cycle
 
-    // Output PWM signal on PWM_PIN
-    for (int i = 0; i < 100; i++) { // Adjust the loop count for duration
-        PORTC |= (1 << 5);   // Set the pin high
+    int period = 1000000 / pitch;  
+    int high_time = period / 2;   
+
+ 
+    for (int i = 0; i < 100; i++) { 
+        PORTC |= (1 << 5);  
         delay_us(high_time);
-        PORTC &= ~(1 << 5);  // Set the pin low
-        delay_us(period - high_time);
-    }
-}
-
-// Continuous PWM signal generation during the delay
-void generate_pwm_for_duration(int pitch, int duration_ms) {
-    if (pitch == 0) {
-        // Turn off the buzzer
-        PORTC &= ~(1 << 5);
-        return;
-    }
-
-    // Ensure the pitch value is within a reasonable range
-    if (pitch < 50) {
-        pitch = 50;  // Minimum pitch
-    } else if (pitch > 2000) {
-        pitch = 2000;  // Maximum pitch
-    }
-
-    // Generate the PWM signal with the specified pitch
-    int period = 1000000 / pitch;  // Calculate the period in microseconds
-    int high_time = period / 2;    // 50% duty cycle
-
-    int iterations = (duration_ms * 1000) / period;  // Total iterations for the duration
-
-    // Output PWM signal on PWM_PIN for the duration
-    for (int i = 0; i < iterations; i++) {
-        PORTC |= (1 << 5);   // Set the pin high
-        delay_us(high_time);
-        PORTC &= ~(1 << 5);  // Set the pin low
+        PORTC &= ~(1 << 5); 
         delay_us(period - high_time);
     }
 }

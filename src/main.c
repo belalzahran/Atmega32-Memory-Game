@@ -36,9 +36,6 @@ void addStep();
 int wasPatternReplicated();
 
 
-
-
-
 int main() {
 
     set_input_output_pins();
